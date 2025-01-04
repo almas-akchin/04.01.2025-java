@@ -1,0 +1,43 @@
+class Solution {
+    public int countPalindromicSubsequence(String s) {
+        // Store the first and last occurrence of each character
+        int[] firstOccurrence = new int[26];
+        int[] lastOccurrence = new int[26];
+        
+        // Initialize arrays
+        for (int i = 0; i < 26; i++) {
+            firstOccurrence[i] = -1;
+            lastOccurrence[i] = -1;
+        }
+        
+        // Populate first and last occurrence arrays
+        for (int i = 0; i < s.length(); i++) {
+            int index = s.charAt(i) - 'a';
+            if (firstOccurrence[index] == -1) {
+                firstOccurrence[index] = i;
+            }
+            lastOccurrence[index] = i;
+        }
+        
+        // Count unique palindromes
+        int count = 0;
+        for (int i = 0; i < 26; i++) {
+            // Check if the character appears more than once
+            if (firstOccurrence[i] != -1 && lastOccurrence[i] > firstOccurrence[i]) {
+                boolean[] seen = new boolean[26];
+                // Check characters between the first and last occurrence
+                for (int j = firstOccurrence[i] + 1; j < lastOccurrence[i]; j++) {
+                    seen[s.charAt(j) - 'a'] = true;
+                }
+                // Count the unique characters between first and last occurrence
+                for (boolean exists : seen) {
+                    if (exists) {
+                        count++;
+                    }
+                }
+            }
+        }
+        
+        return count;
+    }
+}
